@@ -56,26 +56,20 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-    .dark-primary-color    { background: #1976D2; }
-    .default-primary-color { background: #2196F3; }
-    .light-primary-color   { background: #BBDEFB; }
-    .text-primary-color    { color: #FFFFFF; }
-    .accent-color          { background: #FF5252; }
-    .primary-text-color    { color: #212121; }
-    .secondary-text-color  { color: #757575; }
-    .divider-color         { border-color: #BDBDBD; }
-
     html {
         height: 100%;
         background: #1976D2;
     }
     body {
         height: 100%;
+        min-height: 650px;
         background: #fff;
     }
     .cover {
         height: 80%;
-        margin: 0; padding: 0;
+        min-height: 500px;
+        margin: 0;
+        padding: 0;
         background: #2196F3;
         box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
@@ -100,16 +94,146 @@ textarea {
         border-radius:25px;
     }
 
+    .top-menu {
+        height: 50px;
+        margin: 0;
+        padding: 10px;
+        background: #2196F3;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+    .top-menu-title {
+        color: #FFFFFF;
+        padding: 0;
+        margin: 0;
+        margin-right: 15px;
+        display: inline-block;
+    }
+    .top-menu-item {
+        color: #BBDEFB;
+        text-decoration: none;
+    }
+    .top-menu-item:hover {
+        text-decoration: underline;
+    }
+    .content {
+
+    }
+    .gallery {
+        margin: 30px auto 0;
+        width: 90%;
+        min-width: 800px;
+        height: 500px;
+        position: relative;
+        /*background: green;*/
+    }
+    .gallery-link {
+        display: block;
+        width: 98px;
+        height: 98px;
+        position: absolute;
+        z-index: 10;
+        top: 201px;
+        background-color: #222;
+        color: #fff;
+    }
+    .gallery-link span {
+        display: none;
+    }
+    .gallery-link.is-disabled {
+        opacity: 0.2;
+        cursor: default;
+    }
+    .gallery-link-prev {
+        background: url(../imgs/seta-esquerda.jpg);
+        left: 0px;
+    }
+    .gallery-link-next {
+        background: url(../imgs/seta-direita.jpg);
+        right: 0px;
+    }
+    .gallery-photo-area {
+        margin: 0 108px;
+        height: 500px;
+        /*background: blue;*/
+    }
+    .gallery-placeholder {
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        margin-left:-400px;
+        padding-top:230px;
+        width:800px;
+        height: 270px;
+        color: #757575;
+        background: #eee;
+        text-align: center;
+        box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+    }
+    .gallery-placeholder-msg {
+        display: block;
+    }
+    .float-box {
+        background: #fff;
+        position: absolute;
+        top: 60px;
+        left:105px;
+        width: 300px;
+        height: 111px;
+        padding:20px;
+        border-radius: 20px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        display: none;
+    }
+    .float-box-arrow {
+        background: url(../imgs/icon-arrow.png);
+        position: absolute;
+        width: 32px;
+        height: 14px;
+        top: -10px;
+        left: 154px;
+    }
+    .form-add-photo {
+
+    }
+    .form-add-photo-label {
+        color: #757575;
+    }
+    .form-add-photo-input {
+        width: 300px;
+        padding: 10px 0px 13px;
+        font-size: 12px;
+        color: #757575;
+    }
+    .form-add-photo-input.is-empty {
+        color: red;
+        font-weight: bold;
+    }
+    .form-add-photo-submit {
+        background: #FF5252;
+        color: #FFFFFF;
+        padding: 15px;
+        text-align: center;
+        border: none;
+        border-radius:25px;
+    }
+    .form-add-photo-reset {
+        background: #FFFFFF;
+        color: #BDBDBD;
+        border: none;
+        font-weight: normal;
+    }
 
 
 
-
-
-
-
-
-
-
+    .dark-primary-color    { background: #1976D2; }
+    .default-primary-color { background: #2196F3; }
+    .light-primary-color   { background: #BBDEFB; }
+    .text-primary-color    { color: #FFFFFF; }
+    .accent-color          { background: #FF5252; }
+    .primary-text-color    { color: #212121; }
+    .secondary-text-color  { color: #757575; }
+    .divider-color         { border-color: #BDBDBD; }
 
 
 /* ==========================================================================
