@@ -37,7 +37,11 @@ class UploadedPhoto extends UploadedFile
      */
     public function isValid()
     {
-        return $this->isImage() && !$this->isExistent() && $this->isAllowedSize() && $this->isAllowedFormat();
+        return !$this->hasUploadError() &&
+               $this->isImage() &&
+               !$this->isExistent() &&
+               $this->isAllowedSize() &&
+               $this->isAllowedFormat();
     }
 
     /**
@@ -75,7 +79,7 @@ class UploadedPhoto extends UploadedFile
     private function isImage()
     {
         // Se não for uma imagem, retorna false
-        $check = getimagesize($this->tmpName);
+        $check = @getimagesize($this->tmpName);
 
         return $check !== false;
     }

@@ -76,6 +76,16 @@ abstract class UploadedFile
         $this->maxAllowedSize = $maxAllowedSize;
     }
 
+    /**
+     * Verifica se tem erro de upload no arquivo.
+     *
+     * @return bool true se possuir erro
+     */
+    public function hasUploadError()
+    {
+        return $this->error > 0;
+    }
+
     // Métodos abstratos
     abstract public function isValid();
     abstract public function isMoved();

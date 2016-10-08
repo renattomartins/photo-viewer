@@ -35,7 +35,7 @@
         </div>
 
         <div class="float-box">
-            <form class="form-add-photo" action="add.php" method="post" enctype="multipart/form-data">
+            <form class="form-add-photo" action="add.php?class=PhotosController&method=add" method="post" enctype="multipart/form-data">
                 <label class="form-add-photo-label" for="fileToUpload">Cadastrar nova foto na galeria...</label>
                 <input class="form-add-photo-input js-input-file" type="file" name="photo" id="fileToUpload">
                 <input class="form-add-photo-submit js-btn-add-submit" type="submit" value="Salvar foto" name="submit">
