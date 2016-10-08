@@ -97,4 +97,5 @@ abstract class UploadedFile
     abstract public function isValid();
     abstract public function isMoved();
     abstract public function save();
+    abstract public function getValidationErrors();
 }

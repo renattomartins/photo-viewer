@@ -72,6 +72,57 @@ class UploadedPhoto extends UploadedFile
     }
 
     /**
+     * Pega erros de validação.
+     *
+     * @return array Retorna um array indexado numericamente com cada um dos erros de validação
+     */
+    public function getValidationErrors()
+    {
+        // ATENÇÃO:
+        // Se não fosse apenas um teste de codificação (MaxMilhas) e se esse sistema fosse evoluir para
+        // ter uma release 2 e evoluções no código, esse método teria que ser extraído e refatorado.
+        // Não só esse método, mas, na verdade, cada uma funções privadas (isImage(), isExistent(), etc)
+        // dessa classe poderiam se tornar uma espécie de objeto UploadedFileRule que implementaria
+        // uma interface com os métodos UploadedFileRule::passed() e UploadedFileRule::getErrorMessage().
+        // A classe UploadedFile poderia AGREGAR uma série de objetos UploadedFileRule e tudo ia ser
+        // MUITO legal. Mas por enquanto, vamos deixar do jeito que está.
+
+        $errors = [];
+
+        // Foto já foi movida
+        if ($this->isMoved()) {
+            $errors[] = 'Essa foto já foi movida do local temporário para seu local permanentemente.';
+
+            return $errors;
+        }
+
+        // Não é imagem
+        if (!$this->isImage()) {
+            $errors[] = 'A foto enviada não é uma imagem válida.';
+        }
+
+        // Nome de arquivo já utilizado
+        if ($this->isExistent()) {
+            $errors[] = "O nome \"{$this->name}\" já está sendo utilizado. ".
+                        'Escolha outro nome e tente enviar a foto novamente.';
+        }
+
+        // Tamanho excede o máximo permitido
+        if (!$this->isAllowedSize()) {
+            $errors[] = 'O tamanho do arquivo ('.formatBytes($this->size).
+                        ') excede o tamanho máximo permitido '.formatBytes($this->maxAllowedSize).'.';
+        }
+
+        // Formato não permitido
+        if (!$this->isAllowedFormat()) {
+            $errors[] = 'Extensão de arquivo não permitada. Extensões permitidas: '.
+                        implode(', ', $this->allowedTypes).'.';
+        }
+
+        return $errors;
+    }
+
+    /**
      * Testa se é uma imagem.
      *
      * @return bool True se é uma imagem
