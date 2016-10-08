@@ -1,14 +1,15 @@
 <?php
 
 require 'src/Components/FileUploader/UploadedFile.php';
+require 'src/Components/FileUploader/UploadedFileException.php';
 require 'src/Components/FileUploader/UploadedPhoto.php';
 
 // --- Análise, tratamento e encapsulamento das superglobais ---
-//
+
 // Para não usar as superglobais do PHP dentro de classes (o que não seria uma
 // boa prática de desenvolvimento) elas são analisadas e colocadas em variáveis
 // que são passadas para dentro das classes de Controller.
-//
+
 // Essa análise e tratamento dessas superglobais poderia ser feita no próprio
 // Front Controller ou em uma classe de Dispatcher (que também poderia analisar,
 // tratar e encapsular melhor outros aspectos do corpo e/ou cabeçalho da
@@ -35,11 +36,15 @@ if (count($_FILES) == 1) {
 // <code here>
 
 if (isset($inputName)) {
-    $uploadedPhoto = new Components\FileUploader\UploadedPhoto($inputName, $file);
-    echo '<br> -> '.$uploadedPhoto->isValid();
-    echo '<br> -> '.$uploadedPhoto->save();
-    echo '<br> -> '.$uploadedPhoto->isValid();
-    echo '<br> -> '.$uploadedPhoto->save();
+    try {
+        $uploadedPhoto = new Components\FileUploader\UploadedPhoto($inputName, $file);
+        echo '<br> -> '.$uploadedPhoto->isValid();
+        echo '<br> -> '.$uploadedPhoto->save();
+        echo '<br> -> '.$uploadedPhoto->isValid();
+        echo '<br> -> '.$uploadedPhoto->save();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
 
 // header('Location: view.php', true, 302);

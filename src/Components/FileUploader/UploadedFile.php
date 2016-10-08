@@ -47,10 +47,17 @@ abstract class UploadedFile
      */
     public function __construct($inputName, $fileUploadedArray, $targetDir = 'uploads/')
     {
+        // Verifica e trata possíveis erros de upload no arquivo
+        $this->error = $fileUploadedArray[$inputName]['error'];
+        if ($this->error !== UPLOAD_ERR_OK) {
+            // Arremessa exceção
+            throw new UploadedFileException($this->error);
+        }
+
+        // Continua com processo de construção do objeto
         $this->name = $fileUploadedArray[$inputName]['name'];
         $this->type = $fileUploadedArray[$inputName]['type'];
         $this->tmpName = $fileUploadedArray[$inputName]['tmp_name'];
-        $this->error = $fileUploadedArray[$inputName]['error'];
         $this->size = $fileUploadedArray[$inputName]['size'];
         $this->targetDir = $targetDir;
         $this->targetFile = $this->targetDir.basename($this->name);
