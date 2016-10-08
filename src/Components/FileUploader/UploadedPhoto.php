@@ -6,57 +6,65 @@ namespace Components\FileUploader;
  * Classe UploadedPhoto.
  *
  * Essa classe tem a responsabilidade de gerenciar
- * um arquivo recebido do client-side.
+ * um arquivo de foto recebido do client-side, ou
+ * seja, vindo de um upload. Essa classe estende
+ * a classe abstrata UploadedFile.
  *
  * @author Renato Martins <renatto.martins@gmail.com>
  */
-class UploadedPhoto implements UploadedFile
+class UploadedPhoto extends UploadedFile
 {
-    private $name;
-    private $type;
-    private $tmpName;
-    private $error;
-    private $size;
-    private $targetDir;
-    private $targetFile;
-    private $uploadOk;
-    private $fileName;
-    private $extension;
-    private $maxAllowedSize = 5000000; // ~4.76 MB
-    private $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-
     /**
      * Método Construtor.
+     *
+     * @param string $inputName         Nome do campo de formulário do arquivo recebido
+     * @param array  $fileUploadedArray Array previamente formatado pelo PHP (ie. global $_FILES)
+     * @param string $targetDir         Diretório de destino final do arquivo
      */
-    public function __construct($inputName, $fileUploadArray)
+    public function __construct($inputName, $fileUploadedArray, $targetDir = 'uploads/')
     {
-        $this->name = $fileUploadArray[$inputName]['name'];
-        $this->type = $fileUploadArray[$inputName]['type'];
-        $this->tmpName = $fileUploadArray[$inputName]['tmp_name'];
-        $this->error = $fileUploadArray[$inputName]['error'];
-        $this->size = $fileUploadArray[$inputName]['size'];
-        $this->targetDir = 'uploads/';
-        $this->targetFile = $this->targetDir.basename($this->name);
-        $this->uploadOk = true;
-        $this->fileName = pathinfo($this->targetFile, PATHINFO_FILENAME);
-        $this->extension = pathinfo($this->targetFile, PATHINFO_EXTENSION);
+        // Chama construtor da classe abstrata pai
+        parent::__construct($inputName, $fileUploadedArray, $targetDir);
+
+        // Tipos permitidos para upload de fotos
+        $this->allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
     }
 
     /**
-     * Altera o diretório onde o arquivo é colocado.
+     * Verifica se o arquivo é válido para UploadedPhoto.
+     *
+     * @return bool true se ok
      */
-    public function setTargetDir($targetDir)
+    public function isValid()
     {
-        $this->targetDir = $targetDir;
-        $this->targetFile = $this->targetDir.basename($this->name);
+        return $this->isImage() && !$this->isExistent() && $this->isAllowedSize() && $this->isAllowedFormat();
     }
 
     /**
-     * Altera o tamanho máximo permitido para o arquivo.
+     * Verifica se arquivo já foi movido para seu destino final.
+     *
+     * @return bool true se já foi movido
      */
-    public function setMaxAllowedSize($maxAllowedSize)
+    public function isMoved()
     {
-        $this->maxAllowedSize = $maxAllowedSize;
+        return $this->isMoved;
+    }
+
+    /**
+     * Salva o arquivo permanentemente no servidor, movendo-o do diretório temporário
+     * do PHP de arquivos recebidos para seu destino final (UploadedFile::$targetDir).
+     *
+     * @return bool true se arquivo foi salvo; false se não
+     */
+    public function save()
+    {
+        // Verifica se arquivo respeita todas as condições
+        if (!$this->isMoved() && $this->isValid()) {
+            // Tenta mover arquivo temporário para a pasta adequada
+            return $this->isMoved = move_uploaded_file($this->tmpName, $this->targetFile);
+        }
+
+        return false;
     }
 
     /**
@@ -99,32 +107,6 @@ class UploadedPhoto implements UploadedFile
      */
     private function isAllowedFormat()
     {
-        return (array_search(strtolower($this->extension), $this->allowedTypes) !== false);
-    }
-
-    /**
-     * Verifica se arquivo é válido para UploadedPhoto.
-     *
-     * @return bool true se ok
-     */
-    public function isValid()
-    {
-        return $this->isImage() && !$this->isExistent() && $this->isAllowedSize() && $this->isAllowedFormat();
-    }
-
-    /**
-     * Salva o arquivo no servidor.
-     *
-     * @return bool true se arquivo foi salvo; false se não
-     */
-    public function save()
-    {
-        // Verifica se arquivo respeita todas as condições
-        if ($this->isValid()) {
-            // Tenta mover arquivo temporário para a pasta adequada
-            return move_uploaded_file($this->tmpName, $this->targetFile);
-        }
-
-        return false;
+        return array_search(strtolower($this->extension), $this->allowedTypes) !== false;
     }
 }

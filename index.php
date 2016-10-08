@@ -20,10 +20,10 @@
         <div class="cover">
             <h1 class="cover-title">MaxMilhas: Teste de Codificação Back-end</h1>
             <div class="cover-description">
-                <p>O Photo Viewer é uma aplicação desenvolvida como parte do
+                <p>O Photo Viewer é uma aplicação web desenvolvida como parte do
                     Teste de Codificação Back-end para a vaga de desenvolvedor
                     na MaxMilhas.</p>
-                <p>É uma aplicação web onde é possível cadastrar fotos, ver
+                <p>Na aplicação é possível cadastrar fotos, ver
                     a lista de fotos cadastradas e também excluir fotos. As
                     fotos cadastradas são exibidas como uma galeria onde o
                     usuário navega e visualiza uma foto por vez.</p>
