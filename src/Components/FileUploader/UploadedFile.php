@@ -67,6 +67,16 @@ abstract class UploadedFile
     }
 
     /**
+     * Pega nome do arquivo.
+     *
+     * @return string Nome do arquivo.
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * Altera o diretório onde o arquivo é colocado.
      */
     public function setTargetDir($targetDir)
