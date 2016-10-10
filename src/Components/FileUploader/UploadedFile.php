@@ -9,9 +9,9 @@ namespace Components\FileUploader;
  * um arquivo recebido do client-side, ou seja, vindo
  * de um upload.
  *
- * UploadedFile é uma classe abstrada e sua arquitetura tem
+ * UploadedFile é uma classe abstrada e seu projeto tem
  * como principal característica a aplicação do princípio
- * OCP (Open-Closed Principle) do **SOLID**. A ideia é
+ * OCP (Open-Closed Principle) do S.O.L.I.D.. A ideia é
  * que seja possível estender essa classe abstrata para
  * gerenciar diferentes tipos de arquivos recebidos ou
  * com configurações de valições específicas.
@@ -69,7 +69,7 @@ abstract class UploadedFile
     /**
      * Pega nome do arquivo.
      *
-     * @return string Nome do arquivo.
+     * @return string Nome do arquivo
      */
     public function getName()
     {
@@ -93,19 +93,9 @@ abstract class UploadedFile
         $this->maxAllowedSize = $maxAllowedSize;
     }
 
-    /**
-     * Verifica se tem erro de upload no arquivo.
-     *
-     * @return bool true se possuir erro
-     */
-    public function hasUploadError()
-    {
-        return $this->error > 0;
-    }
-
     // Métodos abstratos
     abstract public function isValid();
     abstract public function isMoved();
     abstract public function save();
-    abstract public function getValidationErrors();
+    abstract public function getErrors();
 }

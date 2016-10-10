@@ -14,7 +14,7 @@ use Exception;
  * A definição da classe UploadedFileException fazendo
  * parte do pacote FileUploader pode ser considerada um
  * exemplo prático da aplicação do princípio SRP (Single
- * Responsability Principle) do **SOLID** onde as mensagens
+ * Responsability Principle) do S.O.L.I.D. onde as mensagens
  * descritivas de erro não são o assunto principal da
  * da classe UploadedFile. Mantê-lo por lá faria com que
  * aquela classe tivesse mais de um motivo para ser
@@ -24,7 +24,7 @@ use Exception;
  * e poder substituí-la pela classe derivada UploadedFileException
  * em blocos try/catch sem problemas de abstração pode ser
  * considerado um exmplo prático de aplicação do princípio
- * LSP (Liskov Substitution Principle) do **SOLID**.
+ * LSP (Liskov Substitution Principle) do S.O.L.I.D.
  *
  * @author Renato Martins <renatto.martins@gmail.com>
  *

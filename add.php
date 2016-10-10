@@ -3,18 +3,15 @@
 require 'src/Components/FileUploader/UploadedFile.php';
 require 'src/Components/FileUploader/UploadedFileException.php';
 require 'src/Components/FileUploader/UploadedPhoto.php';
+require 'src/Models/Photo.php';
 
 function formatBytes($bytes, $precision = 2)
 {
     $units = array('B', 'KB', 'MB', 'GB', 'TB');
-
     $bytes = max($bytes, 0);
     $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
     $pow = min($pow, count($units) - 1);
-
-    // Uncomment one of the following alternatives
     $bytes /= pow(1024, $pow);
-    // $bytes /= (1 << (10 * $pow));
 
     return round($bytes, $precision).' '.$units[$pow];
 }
@@ -62,7 +59,7 @@ if (isset($inputName)) {
         } else {
             // Exige mensagem de erro
             // code...
-            print_r($uploadedPhoto->getValidationErrors());
+            print_r($uploadedPhoto->getErrors());
         }
     } catch (Exception $e) {
         // Exige mensagem de erro
