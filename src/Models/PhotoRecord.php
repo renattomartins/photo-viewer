@@ -95,6 +95,32 @@ class PhotoRecord implements ActiveRecord, Walkable
      */
     public function delete()
     {
+        $conn = Connection::open('photoviewer');
+
+        // Inicia transação para realizar exclusão do arquivo no disco e do registro no BD de forma atômica
+        $conn->beginTransaction();
+
+        // Prepara e executa query
+        $stmt = $conn->prepare('DELETE FROM photos WHERE `id` = :id');
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $success = $stmt->execute();
+
+        // Exclui arquivo correspondente
+        $success = $success && unlink(self::PHOTOS_DIRECTORY.$this->name);
+
+        if ($success) {
+            // Confirma transação
+            $success = $conn->commit();
+
+            // Reset nos atributos
+            $this->id = 0;
+            $this->name = '';
+            return $success;
+        }
+        // Desfaz transação
+        $conn->rollBack();
+
+        return false;
     }
 
     /**
