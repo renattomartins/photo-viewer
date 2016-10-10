@@ -1,32 +1,37 @@
 <?php
 
 require 'src/Core/FileNotFoundException.php';
+require 'src/Models/Connection.php';
 require 'src/Models/ActiveRecord.php';
-require 'src/Models/Photo.php';
+require 'src/Models/Walkable.php';
+require 'src/Models/PhotoRecord.php';
+require 'src/Models/Repository.php';
 require 'src/Models/PhotoRepository.php';
+require 'src/Widgets/Widget.php';
+require 'src/Widgets/PhotoGallery/GalleryButton.php';
+require 'src/Widgets/PhotoGallery/GalleryPhoto.php';
 
 // Trata superglobal $_GET
 // print_r($_GET);
 // echo '<br>';
 
+// Repositório de fotos
+$photoRepository = new Models\PhotoRepository();
+$totalPhotos = $photoRepository->count();
+
 if (isset($_GET['id'])) {
-    // $photoRepository = new Models\PhotoRepository;
-    // print_r($photoRepository->load());
-
-    // Tenta recuperar a foto $id
-    if ($currentPhoto = Models\Photo::load($_GET['id'])) {
-        echo 'Current: '.$currentPhoto->toString().'<br>';
-
-        // Tenta recuperar a foto anterior
-        if ($prevPhoto = $currentPhoto->previous()) {
-            echo 'Previous: '.$prevPhoto->toString().'<br>';
-        }
-
-        // Tenta recuperar a foto seguinte
-        if ($nextPhoto = $currentPhoto->next()) {
-            echo 'Next: '.$nextPhoto->toString().'<br>';
-        }
+    // Tenta recuperar a foto referente ao $id passado via URL
+    $currentPhoto = Models\PhotoRecord::load($_GET['id']);
+} else {
+    // Tenta recuperar a primeira foto cadastrada
+    if ($records = $photoRepository->load(null, 'id ASC', 1)) {
+        $currentPhoto = Models\PhotoRecord::load($records[0]['id']);
     }
+}
+if ($currentPhoto) {
+    // Tenta recuperar a foto anterior e posterior
+    $prevPhoto = $currentPhoto->previous();
+    $nextPhoto = $currentPhoto->next();
 }
 
 ?>
@@ -50,19 +55,34 @@ if (isset($_GET['id'])) {
     </head>
     <body>
         <div class="top-menu">
-            <h1 class="top-menu-title">Photo Viewer</h1>
+            <h1 class="top-menu-title"><a class="top-menu-title-link" href="index.php">Photo Viewer</a></h1>
             <a class="top-menu-item js-btn-add" href="#/add/">Cadastrar nova foto...</a>
         </div>
 
         <div class="content">
             <div class="gallery">
-                <a class="gallery-link gallery-link-prev is-disabled"><span>Foto anterior</span></a>
-                <div class="gallery-photo-area">
-                    <div class="gallery-placeholder">
-                        <span class="gallery-placeholder-msg">Você ainda não possui nenhuma foto cadastrada.</span>
-                    </div>
-                </div>
-                <a class="gallery-link gallery-link-next is-disabled"><span>Foto seguinte</span></a>
+                <?php
+                    // Botão de voltar para a foto anterior
+                    $prevButton = new Widgets\PhotoGallery\GalleryButton(
+                        Widgets\PhotoGallery\GalleryButton::PREV,
+                        $prevPhoto
+                    );
+                    echo $prevButton->render();
+
+                    // Foto principal
+                    $galleryPhoto = new Widgets\PhotoGallery\GalleryPhoto($currentPhoto, $totalPhotos);
+                    echo $galleryPhoto->render();
+
+                    // Botão de avançar para a próxima foto
+                    $nextButton = new Widgets\PhotoGallery\GalleryButton(
+                        Widgets\PhotoGallery\GalleryButton::NEXT,
+                        $nextPhoto
+                    );
+                    echo $nextButton->render();
+                ?>
+            </div>
+            <div class="total-photos">Total de fotos cadastradas:
+                <span class="total-photos-count"><?php echo $totalPhotos; ?></span>
             </div>
         </div>
 

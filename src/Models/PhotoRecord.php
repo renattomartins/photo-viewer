@@ -6,15 +6,15 @@ use PDO;
 use Core\FileNotFoundException;
 
 /**
- * Classe Photo.
+ * Classe PhotoRecord.
  *
- * Um objeto da classe Photo representa uma 'foto' dentro do domínio de
+ * Um objeto da classe PhotoRecord representa uma 'foto' dentro do domínio de
  * negócios da aplicação Photo Viewer. Essa classe age como o padrão
  * de projeto ActiveRecord.
  *
  * @author Renato Martins <renatto.martins@gmail.com>
  */
-class Photo implements ActiveRecord
+class PhotoRecord implements ActiveRecord, Walkable
 {
     private $id;
     private $name;
@@ -40,7 +40,7 @@ class Photo implements ActiveRecord
     /**
      * Pega ID da foto.
      *
-     * @return int ID do objeto de negócio Photo
+     * @return int ID do objeto de negócio PhotoRecord
      */
     public function getId()
     {
@@ -74,13 +74,13 @@ class Photo implements ActiveRecord
      */
     public function store()
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Prepara e executa query
-        $stmt = $pdo->prepare('INSERT INTO photos(`name`) VALUES( ? )');
+        $stmt = $conn->prepare('INSERT INTO photos(`name`) VALUES( ? )');
         if ($stmt->execute([$this->name])) {
             // Inclui ID verdadeiro no objeto
-            $this->id = $pdo->lastInsertId();
+            $this->id = $conn->lastInsertId();
 
             return true;
         }
@@ -95,19 +95,45 @@ class Photo implements ActiveRecord
      */
     public function delete()
     {
+        $conn = Connection::open('photoviewer');
+
+        // Inicia transação para realizar exclusão do arquivo no disco e do registro no BD de forma atômica
+        $conn->beginTransaction();
+
+        // Prepara e executa query
+        $stmt = $conn->prepare('DELETE FROM photos WHERE `id` = :id');
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $success = $stmt->execute();
+
+        // Exclui arquivo correspondente
+        $success = $success && unlink(self::PHOTOS_DIRECTORY.$this->name);
+
+        if ($success) {
+            // Confirma transação
+            $success = $conn->commit();
+
+            // Reset nos atributos
+            $this->id = 0;
+            $this->name = '';
+            return $success;
+        }
+        // Desfaz transação
+        $conn->rollBack();
+
+        return false;
     }
 
     /**
      * Carrega um objeto para a memória.
      *
-     * @return Photo|null Retorna um objeto Photo; Ou null, caso não exista o objeto $id
+     * @return PhotoRecord|null Retorna um objeto PhotoRecord; Ou null, caso não exista o objeto $id
      */
     public static function load($id)
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Prepara e executa query
-        $stmt = $pdo->prepare('SELECT `id`, `name` FROM photos WHERE `id` = :id');
+        $stmt = $conn->prepare('SELECT `id`, `name` FROM photos WHERE `id` = :id');
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -131,14 +157,14 @@ class Photo implements ActiveRecord
     /**
      * Carrega para a memória o objeto anterior ao objeto atual.
      *
-     * @return Photo|null Retorna um objeto Photo; Ou null, caso não exista objeto anterior ao atual
+     * @return PhotoRecord|null Retorna um objeto PhotoRecord; Ou null, caso não exista objeto anterior ao atual
      */
     public function previous()
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Prepara e executa query
-        $stmt = $pdo->prepare('SELECT `id`, `name` FROM photos WHERE `id` < :id ORDER BY `id` DESC LIMIT 1');
+        $stmt = $conn->prepare('SELECT `id`, `name` FROM photos WHERE `id` < :id ORDER BY `id` DESC LIMIT 1');
         $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -162,14 +188,14 @@ class Photo implements ActiveRecord
     /**
      * Carrega para a memória o objeto seguinte ao objeto atual.
      *
-     * @return Photo|null Retorna um objeto Photo; Ou null, caso não exista objeto seguinte ao atual
+     * @return PhotoRecord|null Retorna um objeto PhotoRecord; Ou null, caso não exista objeto seguinte ao atual
      */
     public function next()
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Prepara e executa query
-        $stmt = $pdo->prepare('SELECT `id`, `name` FROM photos WHERE `id` > :id ORDER BY `id` ASC LIMIT 1');
+        $stmt = $conn->prepare('SELECT `id`, `name` FROM photos WHERE `id` > :id ORDER BY `id` ASC LIMIT 1');
         $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
         $stmt->execute();
 

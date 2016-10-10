@@ -2,6 +2,14 @@
 
 namespace Models;
 
+/**
+ * Interface ActiveRecord.
+ *
+ * Contrato que deve ser cumprido para classes que implementam
+ * um ActiveRecord.
+ *
+ * @author Renato Martins <renatto.martins@gmail.com>
+ */
 interface ActiveRecord
 {
     /**

@@ -4,8 +4,10 @@ require 'src/Components/FileUploader/UploadedFile.php';
 require 'src/Components/FileUploader/UploadedFileException.php';
 require 'src/Components/FileUploader/UploadedPhoto.php';
 require 'src/Core/FileNotFoundException.php';
+require 'src/Models/Connection.php';
 require 'src/Models/ActiveRecord.php';
-require 'src/Models/Photo.php';
+require 'src/Models/Walkable.php';
+require 'src/Models/PhotoRecord.php';
 
 function formatBytes($bytes, $precision = 2)
 {
@@ -51,12 +53,12 @@ if (count($_FILES) == 1) {
 
 if (isset($inputName)) {
     try {
-        $uploadedPhoto = new Components\FileUploader\UploadedPhoto($inputName, $file, Models\Photo::PHOTOS_DIRECTORY);
+        $uploadedPhoto = new Components\FileUploader\UploadedPhoto($inputName, $file, Models\PhotoRecord::PHOTOS_DIRECTORY);
 
         // Tentar salvar o arquivo recebido na pasta adequada do servidor
         if ($uploadedPhoto->save()) {
-            // Cria objeto de negócio Photo com base no arquivo recebido
-            $photo = new Models\Photo($uploadedPhoto->getName());
+            // Cria objeto de negócio PhotoRecord com base no arquivo recebido
+            $photo = new Models\PhotoRecord($uploadedPhoto->getName());
             echo '<br>' . $photo->toString();
             // Tenta persistir o objeto de negócio
             if ($photo->store()) {

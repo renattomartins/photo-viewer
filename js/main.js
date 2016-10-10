@@ -55,6 +55,9 @@ views = {
             $('.js-btn-add-submit').click(function(e) { if( $('.js-input-file').val() == '' ) { e.preventDefault(); $('.js-input-file').addClass('is-empty'); } });
             $('.js-btn-add-reset').click(function() { $(document).click(); });
             $('.js-input-file').change(function(){ $('.js-input-file').removeClass('is-empty'); });
+
+            // Atribui eventos para controlar o fluxo do botão de excluir foto
+            $('.js-form-delete').submit(function(e) { return confirm('### ATENÇÃO ### \nVocê tem certeza que deseja excluir essa foto da galeria?'); });
         },
 
         /**

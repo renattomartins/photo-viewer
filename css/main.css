@@ -109,6 +109,10 @@ textarea {
         margin-right: 15px;
         display: inline-block;
     }
+    .top-menu-title-link {
+        color: #FFFFFF;
+        text-decoration: none;
+    }
     .top-menu-item {
         color: #BBDEFB;
         text-decoration: none;
@@ -173,6 +177,31 @@ textarea {
     .gallery-placeholder-msg {
         display: block;
     }
+    .gallery-placeholder-link {
+        color: #757575;
+    }
+    .gallery-photo {
+        max-height: 500px;
+        max-width: 100%;
+        margin: 0 auto;
+        display: block;
+    }
+    .gallery-form-delete-submit {
+        position: absolute;
+        top:470px;
+        right: 70px;
+        background: #FFF;/*#757575;#212121*/
+        color: #757575;
+        padding: 15px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        border: 1px solid #BDBDBD;
+        border-radius:25px;
+    }
+    .gallery-form-delete-submit:hover {
+        color: #FF5252;
+    }
     .float-box {
         background: #fff;
         position: absolute;
@@ -222,6 +251,16 @@ textarea {
         color: #BDBDBD;
         border: none;
         font-weight: normal;
+    }
+    .total-photos {
+        position: absolute;
+        left:5px;
+        bottom: 5px;
+        color: #757575;
+        font-size: 12px;
+    }
+    .total-photos-count {
+        font-weight: bold;
     }
 
 
