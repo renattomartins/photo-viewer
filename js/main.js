@@ -40,6 +40,39 @@ views = {
     setDefaults: function() {},
 
     /**
+     * Objeto Literal widgets.
+     */
+    widgets: {
+
+        /**
+         * Objeto Literal hints
+         */
+        hints: {
+
+            /**
+             * Inicializa widget.
+             */
+            init: function() {
+
+                // Começa a ocultar os hints após 6 segundos (4+2, +2, +2, ...)
+                setTimeout(function(){
+                    // Navega por cada um dos hint-box existentes
+                    $('.js-hint-box').each(function(idx, elem) {
+                        // Seta timeOut para fechar os hint-box a cada x milisegundos
+                        setTimeout(
+                            function(){ $(elem).fadeOut(600); },
+                            (2000*idx)
+                        );
+                    });
+                }, 4000);
+
+                // Atribui evento para ocultá-lo no clique
+                $('.js-hint-box').click(function (e) { $(this).fadeOut(600); });
+            }
+        }
+    },
+
+    /**
      * Objeto Literal photos.
      */
     photos: {
@@ -58,6 +91,9 @@ views = {
 
             // Atribui eventos para controlar o fluxo do botão de excluir foto
             $('.js-form-delete').submit(function(e) { return confirm('### ATENÇÃO ### \nVocê tem certeza que deseja excluir essa foto da galeria?'); });
+
+            // Associa eventos aos widgets Hints
+            views.widgets.hints.init();
         },
 
         /**
