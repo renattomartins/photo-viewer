@@ -14,7 +14,7 @@ use Core\FileNotFoundException;
  *
  * @author Renato Martins <renatto.martins@gmail.com>
  */
-class Photo
+class Photo implements ActiveRecord
 {
     private $id;
     private $name;
@@ -86,6 +86,15 @@ class Photo
         }
 
         return false;
+    }
+
+    /**
+     * Exclui objeto.
+     *
+     * @return bool True se objeto excluído com sucesso; False caso contrário
+     */
+    public function delete()
+    {
     }
 
     /**

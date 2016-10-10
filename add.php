@@ -4,6 +4,7 @@ require 'src/Components/FileUploader/UploadedFile.php';
 require 'src/Components/FileUploader/UploadedFileException.php';
 require 'src/Components/FileUploader/UploadedPhoto.php';
 require 'src/Core/FileNotFoundException.php';
+require 'src/Models/ActiveRecord.php';
 require 'src/Models/Photo.php';
 
 function formatBytes($bytes, $precision = 2)
