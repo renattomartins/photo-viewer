@@ -1,3 +1,34 @@
+<?php
+
+require 'src/Core/FileNotFoundException.php';
+require 'src/Models/Photo.php';
+require 'src/Models/PhotoRepository.php';
+
+// Trata superglobal $_GET
+// print_r($_GET);
+// echo '<br>';
+
+if (isset($_GET['id'])) {
+    // $photoRepository = new Models\PhotoRepository;
+    // print_r($photoRepository->load());
+
+    // Tenta recuperar a foto $id
+    if ($currentPhoto = Models\Photo::load($_GET['id'])) {
+        echo 'Current: '.$currentPhoto->toString().'<br>';
+
+        // Tenta recuperar a foto anterior
+        if ($prevPhoto = $currentPhoto->previous()) {
+            echo 'Previous: '.$prevPhoto->toString().'<br>';
+        }
+
+        // Tenta recuperar a foto seguinte
+        if ($nextPhoto = $currentPhoto->next()) {
+            echo 'Next: '.$nextPhoto->toString().'<br>';
+        }
+    }
+}
+
+?>
 <!doctype html>
 <html class="no-js" lang="">
     <head>

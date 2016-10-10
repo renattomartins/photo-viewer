@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\FileNotFoundException;
+namespace Core;
 
 use Exception;
 
@@ -11,7 +11,7 @@ use Exception;
  *
  * @author Renato Martins <renatto.martins@gmail.com>
  */
-class UploadedFileException extends Exception
+class FileNotFoundException extends Exception
 {
     /**
      * Método Construtor da exceção.
