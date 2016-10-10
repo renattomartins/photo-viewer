@@ -17,7 +17,7 @@ class Notification
 {
     const SUCCESS = 1;
     const ERROR = 2;
-    const PATH = 'src/Components/Notifications/notifications.txt';
+    const PATH = 'tmp/notifications.txt';
 
     /**
      * Adiciona mensagem de notificação para ser consumida no futuro.

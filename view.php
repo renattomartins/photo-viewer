@@ -1,5 +1,6 @@
 <?php
 
+require 'src/Components/Notifications/Notification.php';
 require 'src/Core/FileNotFoundException.php';
 require 'src/Models/Connection.php';
 require 'src/Models/ActiveRecord.php';
@@ -10,10 +11,15 @@ require 'src/Models/PhotoRepository.php';
 require 'src/Widgets/Widget.php';
 require 'src/Widgets/PhotoGallery/GalleryButton.php';
 require 'src/Widgets/PhotoGallery/GalleryPhoto.php';
+require 'src/Widgets/Hints/Hints.php';
 
 // Repositório de fotos
 $photoRepository = new Models\PhotoRepository();
 $totalPhotos = $photoRepository->count();
+
+$currentPhoto = null;
+$prevPhoto = null;
+$nextPhoto = null;
 
 // ### Trata superglobal $_GET
 if (isset($_GET['id'])) {
@@ -25,7 +31,7 @@ if (isset($_GET['id'])) {
         $currentPhoto = Models\PhotoRecord::load($records[0]['id']);
     }
 }
-if ($currentPhoto) {
+if (isset($currentPhoto)) {
     // Tenta recuperar a foto anterior e posterior
     $prevPhoto = $currentPhoto->previous();
     $nextPhoto = $currentPhoto->next();
@@ -54,6 +60,14 @@ if ($currentPhoto) {
         <div class="top-menu">
             <h1 class="top-menu-title"><a class="top-menu-title-link" href="index.php">Photo Viewer</a></h1>
             <a class="top-menu-item js-btn-add" href="#/add/">Cadastrar nova foto...</a>
+        </div>
+
+        <div class="hints">
+            <?php
+                // Mostra avisos
+                $hints = new Widgets\Hints\Hints();
+                echo $hints->render();
+            ?>
         </div>
 
         <div class="content">

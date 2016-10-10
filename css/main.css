@@ -262,6 +262,40 @@ textarea {
     .total-photos-count {
         font-weight: bold;
     }
+    .hints {
+        position: absolute;
+        z-index: 90;
+        top:80px;
+        right:10px;
+        width: 400px;
+        min-height: 100px;
+    }
+    .hint-box {
+        width:380px;
+        min-height: 60px;
+        border-radius: 10px;
+        padding:10px;
+        margin: 10px 0;
+        opacity: .9;
+        color: #FFF;
+        cursor: default;
+    }
+    .hint-box-error {
+        background: #D32F2F;
+    }
+    .hint-box-success {
+        background: #8BC34A;
+    }
+    .hint-box-title {
+        margin: 0; padding: 0;
+        margin-bottom:8px;
+        font-size:16px;
+    }
+    .hint-box-msg {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size:14px;
+        line-height: 16px;
+    }
 
 
 

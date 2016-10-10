@@ -61,6 +61,10 @@ if (isset($inputName)) {
             if ($photo->store()) {
                 // Adiciona mensagem de sucesso
                 Components\Notifications\Notification::addMessage(Components\Notifications\Notification::SUCCESS, 'Nova foto cadastrada com sucesso!');
+
+                // Redirecina para visualizar a foto recém cadastrada
+                header('Location: view.php?id='.$photo->getId(), true, 302);
+                exit();
             } else {
                 // Adciona mensagem de erro
                 Components\Notifications\Notification::addMessage(Components\Notifications\Notification::ERROR, 'Não foi possível salvar sua foto no banco de dados. Tente novamente mais tarde.');
