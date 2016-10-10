@@ -21,7 +21,7 @@ class PhotoRepository implements Repository
      */
     public function load($criteria = null, $order = 'id ASC', $limit = null)
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Monta a query
         $query = 'SELECT `id`, `name` FROM photos ';
@@ -36,7 +36,7 @@ class PhotoRepository implements Repository
         }
 
         // Executa e retorna coleção de resultados
-        $stmt = $pdo->prepare($query);
+        $stmt = $conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -48,7 +48,7 @@ class PhotoRepository implements Repository
      */
     public function count($criteria = null)
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Monta a query
         $query = 'SELECT count(id) FROM photos ';
@@ -57,7 +57,7 @@ class PhotoRepository implements Repository
         }
 
         // Executa e retorna quantidade de registros selecionados
-        $stmt = $pdo->prepare($query);
+        $stmt = $conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchColumn(0);
     }

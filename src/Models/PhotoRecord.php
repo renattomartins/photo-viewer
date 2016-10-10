@@ -74,13 +74,13 @@ class PhotoRecord implements ActiveRecord, Walkable
      */
     public function store()
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Prepara e executa query
-        $stmt = $pdo->prepare('INSERT INTO photos(`name`) VALUES( ? )');
+        $stmt = $conn->prepare('INSERT INTO photos(`name`) VALUES( ? )');
         if ($stmt->execute([$this->name])) {
             // Inclui ID verdadeiro no objeto
-            $this->id = $pdo->lastInsertId();
+            $this->id = $conn->lastInsertId();
 
             return true;
         }
@@ -104,10 +104,10 @@ class PhotoRecord implements ActiveRecord, Walkable
      */
     public static function load($id)
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Prepara e executa query
-        $stmt = $pdo->prepare('SELECT `id`, `name` FROM photos WHERE `id` = :id');
+        $stmt = $conn->prepare('SELECT `id`, `name` FROM photos WHERE `id` = :id');
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -135,10 +135,10 @@ class PhotoRecord implements ActiveRecord, Walkable
      */
     public function previous()
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Prepara e executa query
-        $stmt = $pdo->prepare('SELECT `id`, `name` FROM photos WHERE `id` < :id ORDER BY `id` DESC LIMIT 1');
+        $stmt = $conn->prepare('SELECT `id`, `name` FROM photos WHERE `id` < :id ORDER BY `id` DESC LIMIT 1');
         $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -166,10 +166,10 @@ class PhotoRecord implements ActiveRecord, Walkable
      */
     public function next()
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
+        $conn = Connection::open('photoviewer');
 
         // Prepara e executa query
-        $stmt = $pdo->prepare('SELECT `id`, `name` FROM photos WHERE `id` > :id ORDER BY `id` ASC LIMIT 1');
+        $stmt = $conn->prepare('SELECT `id`, `name` FROM photos WHERE `id` > :id ORDER BY `id` ASC LIMIT 1');
         $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
