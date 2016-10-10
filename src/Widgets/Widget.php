@@ -15,10 +15,12 @@ abstract class Widget
     protected $output;
 
     /**
-     * Imprime widget na tela.
+     * Renderiza widget e retorna saída pronta para imprimir na tela.
+     *
+     * @return string Saída do widget pronta para ser impressa.
      */
     public function render()
     {
-        echo $this->output;
+        return $this->output;
     }
 }

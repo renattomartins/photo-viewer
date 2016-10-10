@@ -26,7 +26,7 @@ final class GalleryButton extends Widget
      * Método construtor.
      *
      * @param $direction int         Direção do botão (1=Prev), (2=Next)
-     * @param $photo     PhotoRecord Objeto Photo para o qual esse botão faz referência
+     * @param $photo     PhotoRecord Objeto PhotoRecord para o qual esse botão faz referência
      */
     public function __construct($direction = GalleryButton::PREV, PhotoRecord $photo = null)
     {
