@@ -3,6 +3,7 @@
 require 'src/Components/FileUploader/UploadedFile.php';
 require 'src/Components/FileUploader/UploadedFileException.php';
 require 'src/Components/FileUploader/UploadedPhoto.php';
+require 'src/Components/Notifications/Notification.php';
 require 'src/Core/FileNotFoundException.php';
 require 'src/Models/Connection.php';
 require 'src/Models/ActiveRecord.php';
@@ -41,14 +42,10 @@ if (count($_FILES) == 1) {
     $file = $_FILES;
 }
 
-// Trata superglobal $_POST
-// print_r($_POST);
-// echo '<br>';
+// ### Trata superglobal $_POST
 // <code here>
 
-// Trata superglobal $_GET
-// print_r($_GET);
-// echo '<br>';
+// ### Trata superglobal $_GET
 // <code here>
 
 if (isset($inputName)) {
@@ -59,32 +56,34 @@ if (isset($inputName)) {
         if ($uploadedPhoto->save()) {
             // Cria objeto de negócio PhotoRecord com base no arquivo recebido
             $photo = new Models\PhotoRecord($uploadedPhoto->getName());
-            echo '<br>' . $photo->toString();
+
             // Tenta persistir o objeto de negócio
             if ($photo->store()) {
                 // Adiciona mensagem de sucesso
-                echo '<br>Arquivo salvo!';
-                echo '<br>' . $photo->toString();
+                Components\Notifications\Notification::addMessage(Components\Notifications\Notification::SUCCESS, 'Nova foto cadastrada com sucesso!');
             } else {
                 // Adciona mensagem de erro
-                // Apaga arquivo da pasta de upload
+                Components\Notifications\Notification::addMessage(Components\Notifications\Notification::ERROR, 'Não foi possível salvar sua foto no banco de dados. Tente novamente mais tarde.');
+
+                // Apaga arquivo no servidor
+                unlink(Models\PhotoRecord::PHOTOS_DIRECTORY.$uploadedPhoto->getName());
             }
         } else {
-            // Adiciona mensagem de erro
-            // code... print_r($uploadedPhoto->getErrors());
+            // Adiciona mensagens de erro de validação do arquivo recebido
+            $errors = $uploadedPhoto->getErrors();
+            foreach ($errors as $message) {
+                Components\Notifications\Notification::addMessage(Components\Notifications\Notification::ERROR, $message);
+            }
         }
     } catch (Components\FileUploader\UploadedFileException $e) {
-        // Adiciona mensagem de erro
-        // code... echo 'Primeira: '.$e->getMessage();
+        Components\Notifications\Notification::addMessage(Components\Notifications\Notification::ERROR, $e->getMessage());
     } catch (Core\FileNotFoundException $e) {
-        // Adiciona mensagem de erro
-        // code... echo 'Segunda: '.$e->getMessage();
+        Components\Notifications\Notification::addMessage(Components\Notifications\Notification::ERROR, $e->getMessage());
     } catch (Exception $e) {
-        // Adiciona mensagem de erro
-        // code... echo 'Padrão: '.$e->getMessage();
+        Components\Notifications\Notification::addMessage(Components\Notifications\Notification::ERROR, $e->getMessage());
     }
 }
 
 // Redirecina para a tela inicial de visualização de fotos
-// header('Location: view.php', true, 302);
-// exit();
+header('Location: view.php', true, 302);
+exit();

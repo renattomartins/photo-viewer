@@ -11,14 +11,11 @@ require 'src/Widgets/Widget.php';
 require 'src/Widgets/PhotoGallery/GalleryButton.php';
 require 'src/Widgets/PhotoGallery/GalleryPhoto.php';
 
-// Trata superglobal $_GET
-// print_r($_GET);
-// echo '<br>';
-
 // Repositório de fotos
 $photoRepository = new Models\PhotoRepository();
 $totalPhotos = $photoRepository->count();
 
+// ### Trata superglobal $_GET
 if (isset($_GET['id'])) {
     // Tenta recuperar a foto referente ao $id passado via URL
     $currentPhoto = Models\PhotoRecord::load($_GET['id']);
