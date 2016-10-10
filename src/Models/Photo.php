@@ -3,9 +3,14 @@
 namespace Models;
 
 use PDO;
+use Core\FileNotFoundException;
 
 /**
  * Classe Photo.
+ *
+ * Um objeto da classe Photo representa uma 'foto' dentro do domínio de
+ * negócios da aplicação Photo Viewer. Essa classe age como o padrão
+ * de projeto ActiveRecord.
  *
  * @author Renato Martins <renatto.martins@gmail.com>
  */
@@ -14,56 +19,71 @@ class Photo
     private $id;
     private $name;
 
+    const PHOTOS_DIRECTORY = 'uploads/photos/';
+
+    /**
+     * Método Construtor.
+     *
+     * @param string $name Nome do arquivo da foto
+     */
     public function __construct($name)
     {
+        if (!file_exists(self::PHOTOS_DIRECTORY.$name)) {
+            // Arremessa exceção
+            throw new FileNotFoundException();
+        }
+
         $this->id = 0;
         $this->name = $name;
     }
 
+    /**
+     * Pega ID da foto.
+     *
+     * @return int ID do objeto de negócio Photo
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * Pega nome do arquivo da foto.
+     *
+     * @return string Retorna nome do arquivo da foto
+     */
     public function getName()
     {
         return $this->name;
     }
 
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
+    /**
+     * Converte o objeto para sua versão texto.
+     *
+     * @return string Versão texto do objeto
+     */
     public function toString()
     {
         return "Id: {$this->id}, Name: {$this->name}";
     }
 
-    public function addPhoto()
+    /**
+     * Persite objeto.
+     *
+     * @return bool True se objeto persistido com sucesso; False caso contrário
+     */
+    public function store()
     {
         $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
 
         $stmt = $pdo->prepare('INSERT INTO photos(`name`) VALUES( ? )');
-        $stmt->execute([$this->name]);
-        $this->id = $pdo->lastInsertId();
+        if ($stmt->execute([$this->name])) {
+            // Configura ID verdadeiro do objeto
+            $this->id = $pdo->lastInsertId();
 
-        return 'Foto cadastrada com sucesso!';
-    }
-
-    public function previous()
-    {
-        $pdo = new PDO('mysql:host=localhost;dbname=praticaltests_photoviewer', 'root', 'root');
-        $query = "SELECT `id`, `name` FROM photos WHERE `id` < {$this->id} ORDER BY `id` DESC LIMIT 1";
-        foreach ($pdo->query($query, PDO::FETCH_ASSOC) as $photo) {
-            print_r($photo);
+            return true;
         }
 
-        // return 'Foto cadastrada com sucesso!';
-    }
-
-    public function next()
-    {
-        // select id,title from videos where id > $local_id order by id asc limit 1
+        return false;
     }
 }

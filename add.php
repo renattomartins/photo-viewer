@@ -3,6 +3,7 @@
 require 'src/Components/FileUploader/UploadedFile.php';
 require 'src/Components/FileUploader/UploadedFileException.php';
 require 'src/Components/FileUploader/UploadedPhoto.php';
+require 'src/Core/FileNotFoundException.php';
 require 'src/Models/Photo.php';
 
 function formatBytes($bytes, $precision = 2)
@@ -49,22 +50,35 @@ if (count($_FILES) == 1) {
 
 if (isset($inputName)) {
     try {
-        $uploadedPhoto = new Components\FileUploader\UploadedPhoto($inputName, $file);
+        $uploadedPhoto = new Components\FileUploader\UploadedPhoto($inputName, $file, Models\Photo::PHOTOS_DIRECTORY);
 
-        // Tentar salvar arquivo no servidor
+        // Tentar salvar o arquivo recebido na pasta adequada do servidor
         if ($uploadedPhoto->save()) {
-            // Exibe mensagem de sucesso
-            // code...
-            echo 'A nova foto foi cadastrada com sucesso!';
+            // Cria objeto de negócio Photo com base no arquivo recebido
+            $photo = new Models\Photo($uploadedPhoto->getName());
+            echo '<br>' . $photo->toString();
+            // Tenta persistir o objeto de negócio
+            if ($photo->store()) {
+                // Adiciona mensagem de sucesso
+                echo '<br>Arquivo salvo!';
+                echo '<br>' . $photo->toString();
+            } else {
+                // Adciona mensagem de erro
+                // Apaga arquivo da pasta de upload
+            }
         } else {
-            // Exige mensagem de erro
-            // code...
-            print_r($uploadedPhoto->getErrors());
+            // Adiciona mensagem de erro
+            // code... print_r($uploadedPhoto->getErrors());
         }
+    } catch (Components\FileUploader\UploadedFileException $e) {
+        // Adiciona mensagem de erro
+        // code... echo 'Primeira: '.$e->getMessage();
+    } catch (Core\FileNotFoundException $e) {
+        // Adiciona mensagem de erro
+        // code... echo 'Segunda: '.$e->getMessage();
     } catch (Exception $e) {
-        // Exige mensagem de erro
-        // code...
-        echo $e->getMessage();
+        // Adiciona mensagem de erro
+        // code... echo 'Padrão: '.$e->getMessage();
     }
 }
 
