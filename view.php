@@ -9,25 +9,33 @@ require 'src/Models/PhotoRepository.php';
 // print_r($_GET);
 // echo '<br>';
 
+// Repositório de fotos
+$photoRepository = new Models\PhotoRepository;
+$totalPhotos = $photoRepository->count();
+
 if (isset($_GET['id'])) {
-    // $photoRepository = new Models\PhotoRepository;
-    // print_r($photoRepository->load());
-
-    // Tenta recuperar a foto $id
-    if ($currentPhoto = Models\Photo::load($_GET['id'])) {
-        echo 'Current: '.$currentPhoto->toString().'<br>';
-
-        // Tenta recuperar a foto anterior
-        if ($prevPhoto = $currentPhoto->previous()) {
-            echo 'Previous: '.$prevPhoto->toString().'<br>';
-        }
-
-        // Tenta recuperar a foto seguinte
-        if ($nextPhoto = $currentPhoto->next()) {
-            echo 'Next: '.$nextPhoto->toString().'<br>';
-        }
+    // Tenta recuperar a foto referente ao $id passado via URL
+    $currentPhoto = Models\Photo::load($_GET['id']);
+} else {
+    // Tenta recuperar a primeira foto cadastrada
+    if ($records = $photoRepository->load(null, 'id ASC', 1)) {
+        $currentPhoto = Models\Photo::load($records[0]['id']);
     }
 }
+if ($currentPhoto) {
+    echo 'Current: '.$currentPhoto->toString().'<br>';
+
+    // Tenta recuperar a foto anterior
+    if ($prevPhoto = $currentPhoto->previous()) {
+        echo 'Previous: '.$prevPhoto->toString().'<br>';
+    }
+
+    // Tenta recuperar a foto seguinte
+    if ($nextPhoto = $currentPhoto->next()) {
+        echo 'Next: '.$nextPhoto->toString().'<br>';
+    }
+}
+echo $totalPhotos;
 
 ?>
 <!doctype html>
