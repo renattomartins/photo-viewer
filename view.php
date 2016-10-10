@@ -7,6 +7,8 @@ require 'src/Models/Walkable.php';
 require 'src/Models/PhotoRecord.php';
 require 'src/Models/Repository.php';
 require 'src/Models/PhotoRepository.php';
+require 'src/Widgets/Widget.php';
+require 'src/Widgets/PhotoGallery/GalleryButton.php';
 
 // Trata superglobal $_GET
 // print_r($_GET);
@@ -67,13 +69,19 @@ echo $totalPhotos;
 
         <div class="content">
             <div class="gallery">
-                <a class="gallery-link gallery-link-prev is-disabled"><span>Foto anterior</span></a>
+                <?php
+                    $prevButton = new Widgets\PhotoGallery\GalleryButton(Widgets\PhotoGallery\GalleryButton::PREV, $prevPhoto);
+                    $prevButton->render();
+                ?>
                 <div class="gallery-photo-area">
                     <div class="gallery-placeholder">
                         <span class="gallery-placeholder-msg">Você ainda não possui nenhuma foto cadastrada.</span>
                     </div>
                 </div>
-                <a class="gallery-link gallery-link-next is-disabled"><span>Foto seguinte</span></a>
+                <?php
+                    $nextButton = new Widgets\PhotoGallery\GalleryButton(Widgets\PhotoGallery\GalleryButton::NEXT, $nextPhoto);
+                    $nextButton->render();
+                ?>
             </div>
         </div>
 
