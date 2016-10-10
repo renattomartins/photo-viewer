@@ -12,7 +12,7 @@ use PDO;
  *
  * @author Renato Martins <renatto.martins@gmail.com>
  */
-class PhotoRepository
+class PhotoRepository implements Repository
 {
     /**
      * Carrega uma coleção de fotos (relacionada aos objetos Photo).

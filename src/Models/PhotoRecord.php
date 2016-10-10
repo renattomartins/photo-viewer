@@ -6,15 +6,15 @@ use PDO;
 use Core\FileNotFoundException;
 
 /**
- * Classe Photo.
+ * Classe PhotoRecord.
  *
- * Um objeto da classe Photo representa uma 'foto' dentro do domínio de
+ * Um objeto da classe PhotoRecord representa uma 'foto' dentro do domínio de
  * negócios da aplicação Photo Viewer. Essa classe age como o padrão
  * de projeto ActiveRecord.
  *
  * @author Renato Martins <renatto.martins@gmail.com>
  */
-class Photo implements ActiveRecord
+class PhotoRecord implements ActiveRecord, Walkable
 {
     private $id;
     private $name;
@@ -40,7 +40,7 @@ class Photo implements ActiveRecord
     /**
      * Pega ID da foto.
      *
-     * @return int ID do objeto de negócio Photo
+     * @return int ID do objeto de negócio PhotoRecord
      */
     public function getId()
     {
@@ -100,7 +100,7 @@ class Photo implements ActiveRecord
     /**
      * Carrega um objeto para a memória.
      *
-     * @return Photo|null Retorna um objeto Photo; Ou null, caso não exista o objeto $id
+     * @return PhotoRecord|null Retorna um objeto PhotoRecord; Ou null, caso não exista o objeto $id
      */
     public static function load($id)
     {
@@ -131,7 +131,7 @@ class Photo implements ActiveRecord
     /**
      * Carrega para a memória o objeto anterior ao objeto atual.
      *
-     * @return Photo|null Retorna um objeto Photo; Ou null, caso não exista objeto anterior ao atual
+     * @return PhotoRecord|null Retorna um objeto PhotoRecord; Ou null, caso não exista objeto anterior ao atual
      */
     public function previous()
     {
@@ -162,7 +162,7 @@ class Photo implements ActiveRecord
     /**
      * Carrega para a memória o objeto seguinte ao objeto atual.
      *
-     * @return Photo|null Retorna um objeto Photo; Ou null, caso não exista objeto seguinte ao atual
+     * @return PhotoRecord|null Retorna um objeto PhotoRecord; Ou null, caso não exista objeto seguinte ao atual
      */
     public function next()
     {

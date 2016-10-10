@@ -2,7 +2,9 @@
 
 require 'src/Core/FileNotFoundException.php';
 require 'src/Models/ActiveRecord.php';
-require 'src/Models/Photo.php';
+require 'src/Models/Walkable.php';
+require 'src/Models/PhotoRecord.php';
+require 'src/Models/Repository.php';
 require 'src/Models/PhotoRepository.php';
 
 // Trata superglobal $_GET
@@ -15,11 +17,11 @@ $totalPhotos = $photoRepository->count();
 
 if (isset($_GET['id'])) {
     // Tenta recuperar a foto referente ao $id passado via URL
-    $currentPhoto = Models\Photo::load($_GET['id']);
+    $currentPhoto = Models\PhotoRecord::load($_GET['id']);
 } else {
     // Tenta recuperar a primeira foto cadastrada
     if ($records = $photoRepository->load(null, 'id ASC', 1)) {
-        $currentPhoto = Models\Photo::load($records[0]['id']);
+        $currentPhoto = Models\PhotoRecord::load($records[0]['id']);
     }
 }
 if ($currentPhoto) {
