@@ -32,7 +32,7 @@ final class GalleryButton extends Widget
     {
         // Se existe um PhotoRecord para o GalleryButton apontar
         if (isset($photo)) {
-            $href = ' href="view.php?id='.$photo->getId().'"';
+            $href = ' href="index.php?class=PhotosControl&action=view&id='.$photo->getId().'"';
             $cssClass = '';
 
         // Se NÃO existe um PhotoRecord para o GalleryButton apontar

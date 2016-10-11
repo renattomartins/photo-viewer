@@ -52,7 +52,7 @@ class PhotosControl extends Control
                     if ($photo->store()) {
                         // Se tudo ocorreu bem, redireciona usuário para página da foto recém-inserida
                         $this->notifications->addMessage(Notification::SUCCESS, 'Nova foto cadastrada com sucesso!');
-                        $this->redirect('view.php?id='.$photo->getId());
+                        $this->redirect('index.php?class=PhotosControl&action=view&id='.$photo->getId());
                     } else {
                         // Se não foi possível persistir objeto, descarta arquivo recebido e informa o usuário
                         unlink(PhotoRecord::PHOTOS_DIRECTORY.$uploadedPhoto->getName());
@@ -75,8 +75,8 @@ class PhotosControl extends Control
         }
 
         // Para uma melhor UX, em caso de erro, redireciona usuário para a mesma foto que ele estava
-        $urlQueryString = isset($this->get['referedId']) ? '?id='.$this->get['referedId'] : '';
-        $this->redirect('view.php'.$urlQueryString);
+        $urlQueryString = isset($this->get['referedId']) ? '&id='.$this->get['referedId'] : '';
+        $this->redirect('index.php?class=PhotosControl&action=view'.$urlQueryString);
     }
 
     /**
@@ -96,7 +96,7 @@ class PhotosControl extends Control
             }
         }
         // Redireciona usuário para foto inicial da galeria
-        $this->redirect('view.php');
+        $this->redirect('index.php?class=PhotosControl&action=view');
     }
 
     /**

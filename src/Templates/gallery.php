@@ -67,7 +67,7 @@ use Widgets\Hints\Hints;
         <div class="float-box">
             <?php
                 $formAction =
-                    'add.php?class=PhotosControl&action=add'.
+                    'index.php?class=PhotosControl&action=add'.
                     (isset($currentPhoto) ? '&referedId='.$currentPhoto->getId() : '');
                 ?>
             <form class="form-add-photo" method="post" action="<?= $formAction; ?>" enctype="multipart/form-data">
