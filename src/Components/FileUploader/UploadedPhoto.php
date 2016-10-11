@@ -17,14 +17,13 @@ class UploadedPhoto extends UploadedFile
     /**
      * Método Construtor.
      *
-     * @param string $inputName         Nome do campo de formulário do arquivo recebido
-     * @param array  $fileUploadedArray Array previamente formatado pelo PHP (ie. global $_FILES)
-     * @param string $targetDir         Diretório de destino final do arquivo
+     * @param array  $fileInfo  Array previamente formatado pelo PHP (ie. o conteúdo em global $_FILES[fieldName])
+     * @param string $targetDir Diretório de destino final do arquivo
      */
-    public function __construct($inputName, $fileUploadedArray, $targetDir = 'uploads/')
+    public function __construct($fileInfo, $targetDir = 'uploads/')
     {
         // Chama construtor da classe abstrata pai
-        parent::__construct($inputName, $fileUploadedArray, $targetDir);
+        parent::__construct($fileInfo, $targetDir);
 
         // Tipos permitidos para upload de fotos
         $this->allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];

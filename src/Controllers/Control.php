@@ -33,4 +33,15 @@ abstract class Control
             unset($this->get['action']);
         }
     }
+
+    /**
+     * Seta cabeçalho HTTP para redirecionar fluxo para uma requisição.
+     *
+     * @param string $url URL relativa ou absoluta.
+     */
+    protected function redirect($url)
+    {
+        header('Location: '.$url, true, 302);
+        exit();
+    }
 }
