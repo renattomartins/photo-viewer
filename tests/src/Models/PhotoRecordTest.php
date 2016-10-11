@@ -1,8 +1,8 @@
 <?php
 
-namespace Model;
+namespace Models;
 
-use Test\TestCase;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {

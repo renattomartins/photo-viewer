@@ -1,11 +1,11 @@
 <?php
 
-namespace Controller;
+namespace Controllers;
 
-use Test\TestCase;
-use Controller\Controller;
+use Tests\TestCase;
+use Controllers\Controller;
 
-class ControllerTest extends TestCase
+class ControlTest extends TestCase
 {
     public function testIfIsShowingCorrectController()
     {
