@@ -1,40 +1,58 @@
-<!doctype html>
-<html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<?php
+/**
+ * Front Controller.
+ *
+ * Manuseia todas as requisições entrantes. Esse arquivo é
+ * o ponto de entrada único da aplicação. Todos tem que passar
+ * por aqui primeiro.
+ *
+ * @author Renato Martins <renatto.martins@gmail.com>
+ */
 
-        <link rel="stylesheet" href="css/normalize.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
-        <link rel="stylesheet" href="css/main.css">
+ // Requer arquivo de inicialização
+ require __DIR__.'/bootstrap.php';
 
-        <!--[if lt IE 9]>
-            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-            <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
-        <![endif]-->
-    </head>
-    <body>
-        <div class="cover">
-            <h1 class="cover-title">MaxMilhas: Teste de Codificação Back-end</h1>
-            <div class="cover-description">
-                <p>O Photo Viewer é uma aplicação web desenvolvida como parte do
-                    Teste de Codificação Back-end para a vaga de desenvolvedor
-                    na MaxMilhas.</p>
-                <p>Na aplicação é possível cadastrar fotos, ver
-                    a lista de fotos cadastradas e também excluir fotos. As
-                    fotos cadastradas são exibidas como uma galeria onde o
-                    usuário navega e visualiza uma foto por vez.</p>
-                <p>A aplicação foi desenvolvida utilizando PHP 5.6.</p>
-            </div>
-            <a class="cover-link" href="view.php">Acessar &raquo;</a>
-        </div>
+ // Encapsula superglobais
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+ // Para não usar as superglobais do PHP dentro de classes (o que não seria uma
+ // boa prática de desenvolvimento) elas são analisadas e colocadas em variáveis
+ // que são passadas para dentro das classes de Controller.
 
-        <script src="js/main.js"></script>
-    </body>
-</html>
+ // A análise e tratamento dessas superglobais pode ser feita no próprio
+ // Front Controller ou em uma classe candidata Dispatcher (que também poderia
+ // analisar, tratar e encapsular melhor outros aspectos do corpo e/ou cabeçalho
+ // da requisição). Nessa aplicação, a decisão de projeto é tratá-las de maneira
+ // bem simples passando-as do próprio Front Controller para a classe de
+ // Controller instanciada.
+ $globals = ['get' => $_GET, 'post' => $_POST, 'files' => $_FILES];
+
+// Realiza roteamento para executar a classe e action adequadas
+if ($_GET) {
+    // Extrai parâmetros principais da query
+    $class = isset($_GET['class']) ? 'Controllers\\'.$_GET['class'] : null;
+    $action = isset($_GET['action']) ? $_GET['action'] : null;
+
+    // Procura pela classe de controller correspondente
+    if (class_exists($class)) {
+        $controller = new $class($globals);
+
+        // Procura pelo método correspondente
+        if (method_exists($controller, $action)) {
+            $viewVars = $controller->$action();
+
+            // Extrai objetos e variáveis da view
+            extract($viewVars);
+
+            // Requer template
+            require __DIR__.'/src/Templates/'.$controller->getTemplate().'.php';
+            exit();
+        }
+    }
+    // Renderiza "404 Not Found"
+    http_response_code(404);
+    require __DIR__.'/src/Templates/404.php';
+    exit();
+}
+
+// Renderiza a home
+require __DIR__.'/src/Templates/home.php';

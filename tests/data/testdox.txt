@@ -1,0 +1,6 @@
+Controller\Controller
+ [x] If is showing correct controller
+
+Model\User
+ [x] If is saving as expected
+

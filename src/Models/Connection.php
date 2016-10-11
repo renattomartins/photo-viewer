@@ -13,7 +13,7 @@ use Exception;
  * por criar conexões com bancos de dados e implementa o padrão de
  * projeto Factory Method.
  *
- * @author    Pablo Dall'Oglio
+ * @author    Pablo Dall'Oglio (do livro: PHP Orientado a Objetos, 3ª edição)
  * @adaptedBy Renato Martins <renatto.martins@gmail.com>
  */
 final class Connection

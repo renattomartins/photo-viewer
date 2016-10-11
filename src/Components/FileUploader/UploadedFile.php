@@ -41,24 +41,23 @@ abstract class UploadedFile
     /**
      * Método Construtor.
      *
-     * @param string $inputName         Nome do campo de formulário do arquivo recebido
-     * @param array  $fileUploadedArray Array previamente formatado pelo PHP (ie. global $_FILES)
-     * @param string $targetDir         Diretório de destino final do arquivo
+     * @param array  $fileInfo  Array previamente formatado pelo PHP (ie. o conteúdo em global $_FILES[fieldName])
+     * @param string $targetDir Diretório de destino final do arquivo
      */
-    public function __construct($inputName, $fileUploadedArray, $targetDir = 'uploads/')
+    public function __construct($fileInfo, $targetDir = 'uploads/')
     {
         // Verifica e trata possíveis erros de upload no arquivo
-        $this->error = $fileUploadedArray[$inputName]['error'];
+        $this->error = $fileInfo['error'];
         if ($this->error !== UPLOAD_ERR_OK) {
             // Arremessa exceção
             throw new UploadedFileException($this->error);
         }
 
         // Continua com processo de construção do objeto
-        $this->name = $fileUploadedArray[$inputName]['name'];
-        $this->type = $fileUploadedArray[$inputName]['type'];
-        $this->tmpName = $fileUploadedArray[$inputName]['tmp_name'];
-        $this->size = $fileUploadedArray[$inputName]['size'];
+        $this->name = $fileInfo['name'];
+        $this->type = $fileInfo['type'];
+        $this->tmpName = $fileInfo['tmp_name'];
+        $this->size = $fileInfo['size'];
         $this->targetDir = $targetDir;
         $this->targetFile = $this->targetDir.basename($this->name);
         $this->fileName = pathinfo($this->targetFile, PATHINFO_FILENAME);

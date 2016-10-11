@@ -1,41 +1,14 @@
 <?php
-
-require 'src/Components/Notifications/Notification.php';
-require 'src/Core/FileNotFoundException.php';
-require 'src/Models/Connection.php';
-require 'src/Models/ActiveRecord.php';
-require 'src/Models/Walkable.php';
-require 'src/Models/PhotoRecord.php';
-require 'src/Models/Repository.php';
-require 'src/Models/PhotoRepository.php';
-require 'src/Widgets/Widget.php';
-require 'src/Widgets/PhotoGallery/GalleryButton.php';
-require 'src/Widgets/PhotoGallery/GalleryPhoto.php';
-require 'src/Widgets/Hints/Hints.php';
-
-// Repositório de fotos
-$photoRepository = new Models\PhotoRepository();
-$totalPhotos = $photoRepository->count();
-
-$currentPhoto = null;
-$prevPhoto = null;
-$nextPhoto = null;
-
-// ### Trata superglobal $_GET
-if (isset($_GET['id'])) {
-    // Tenta recuperar a foto referente ao $id passado via URL
-    $currentPhoto = Models\PhotoRecord::load($_GET['id']);
-} else {
-    // Tenta recuperar a primeira foto cadastrada
-    if ($records = $photoRepository->load(null, 'id ASC', 1)) {
-        $currentPhoto = Models\PhotoRecord::load($records[0]['id']);
-    }
-}
-if (isset($currentPhoto)) {
-    // Tenta recuperar a foto anterior e posterior
-    $prevPhoto = $currentPhoto->previous();
-    $nextPhoto = $currentPhoto->next();
-}
+/**
+ * Gallery template.
+ *
+ * Esse arquivo possui a marcação HTML do template para a galeria de fotos.
+ *
+ * @author Renato Martins <renatto.martins@gmail.com>
+ */
+use Widgets\PhotoGallery\GalleryButton;
+use Widgets\PhotoGallery\GalleryPhoto;
+use Widgets\Hints\Hints;
 
 ?>
 <!doctype html>
@@ -65,7 +38,7 @@ if (isset($currentPhoto)) {
         <div class="hints">
             <?php
                 // Mostra avisos
-                $hints = new Widgets\Hints\Hints();
+                $hints = new Hints();
                 echo $hints->render();
             ?>
         </div>
@@ -74,21 +47,15 @@ if (isset($currentPhoto)) {
             <div class="gallery">
                 <?php
                     // Botão de voltar para a foto anterior
-                    $prevButton = new Widgets\PhotoGallery\GalleryButton(
-                        Widgets\PhotoGallery\GalleryButton::PREV,
-                        $prevPhoto
-                    );
+                    $prevButton = new GalleryButton(GalleryButton::PREV, $prevPhoto);
                     echo $prevButton->render();
 
                     // Foto principal
-                    $galleryPhoto = new Widgets\PhotoGallery\GalleryPhoto($currentPhoto, $totalPhotos);
+                    $galleryPhoto = new GalleryPhoto($currentPhoto, $totalPhotos);
                     echo $galleryPhoto->render();
 
                     // Botão de avançar para a próxima foto
-                    $nextButton = new Widgets\PhotoGallery\GalleryButton(
-                        Widgets\PhotoGallery\GalleryButton::NEXT,
-                        $nextPhoto
-                    );
+                    $nextButton = new GalleryButton(GalleryButton::NEXT, $nextPhoto);
                     echo $nextButton->render();
                 ?>
             </div>
@@ -98,7 +65,12 @@ if (isset($currentPhoto)) {
         </div>
 
         <div class="float-box">
-            <form class="form-add-photo" action="add.php?class=PhotosController&method=add" method="post" enctype="multipart/form-data">
+            <?php
+                $formAction =
+                    'index.php?class=PhotosControl&action=add'.
+                    (isset($currentPhoto) ? '&referedId='.$currentPhoto->getId() : '');
+                ?>
+            <form class="form-add-photo" method="post" action="<?= $formAction; ?>" enctype="multipart/form-data">
                 <label class="form-add-photo-label" for="fileToUpload">Cadastrar nova foto na galeria...</label>
                 <input class="form-add-photo-input js-input-file" type="file" name="photo" id="fileToUpload">
                 <input class="form-add-photo-submit js-btn-add-submit" type="submit" value="Salvar foto" name="submit">

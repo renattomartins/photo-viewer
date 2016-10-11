@@ -22,9 +22,9 @@ class Notification
     /**
      * Adiciona mensagem de notificação para ser consumida no futuro.
      */
-    public static function addMessage($type, $message)
+    public function addMessage($type, $message)
     {
-        // Abre arquivo
+        // Abre arquivo, escreve e fecha arquivo
         $handle = fopen(self::PATH, "a");
         fwrite($handle, $type . "\t" . $message . "\n");
         fclose($handle);

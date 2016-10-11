@@ -39,17 +39,21 @@ class GalleryPhoto extends Widget
         } elseif (!isset($photo) && $total > 0) {
             $this->output .= '<div class="gallery-placeholder">';
             $this->output .= '<span class="gallery-placeholder-msg">';
-            $this->output .= 'A foto que você está tentando acessar, não existe! Tente voltar à ';
-            $this->output .= '<a href="view.php" class="gallery-placeholder-link">página inicial</a> ';
-            $this->output .= 'e começar novamente.</span>';
+            $this->output .= '<strong class="gallery-placeholder-msg-strong">';
+            $this->output .= 'A foto que você está tentando acessar, não existe!';
+            $this->output .= '</strong> Tente voltar à ';
+            $this->output .= '<a href="index.php?class=PhotosControl&action=view"'.
+                             ' class="gallery-placeholder-link">página inicial</a> ';
+            $this->output .= 'e começar novamente.';
+            $this->output .= '</span>';
             $this->output .= '</div>';
         // Se existe um PhotoRecord
         } elseif (isset($photo)) {
             $this->output .= '<img src="'.
                              PhotoRecord::PHOTOS_DIRECTORY.$photo->getName().
                              '" class="gallery-photo">';
-            $this->output .= '<form class="gallery-form-delete js-form-delete" method="post" action="delete.php?id='.
-                             $photo->getId().'">';
+            $this->output .= '<form class="gallery-form-delete js-form-delete" method="post"'.
+                             ' action="index.php?class=PhotosControl&action=delete&id='.$photo->getId().'">';
             $this->output .= '<input type="submit" class="gallery-form-delete-submit" value="Excluir foto">';
             $this->output .= '</form>';
         }

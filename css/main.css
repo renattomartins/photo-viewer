@@ -79,8 +79,15 @@ textarea {
         padding: 100px 0px 10px 100px;
         margin: 0px 0px 20px 0px;
     }
+    .cover-title-sub {
+        color: #BBDEFB;
+        font-size: 16px;
+        display: inline-block;
+        margin-left: 7px;
+    }
     .cover-description {
         width: 400px;
+        min-height: 100px;
         margin: 0 100px 30px;
         color: #BBDEFB;
     }
@@ -176,6 +183,11 @@ textarea {
     }
     .gallery-placeholder-msg {
         display: block;
+    }
+    .gallery-placeholder-msg-strong {
+        display: block;
+        font-size: 120%;
+        padding-bottom: 10px;
     }
     .gallery-placeholder-link {
         color: #757575;
