@@ -30,7 +30,7 @@ class PhotosControl extends Control
     {
         parent::__construct($globals);
 
-        // Componente Notification
+        // Usa componente Notification
         $this->notifications = new Notification();
     }
 
@@ -61,8 +61,8 @@ class PhotosControl extends Control
                 } else {
                     // Se não foi possível salvar o arquivo no diretório do servidor, informa erros ao usuário
                     $errors = $uploadedPhoto->getErrors();
-                    foreach ($errors as $message) {
-                        $this->notifications->addMessage(Notification::ERROR, $message);
+                    foreach ($errors as $error) {
+                        $this->notifications->addMessage(Notification::ERROR, $error);
                     }
                 }
             } catch (UploadedFileException $e) {
@@ -73,11 +73,36 @@ class PhotosControl extends Control
                 $this->notifications->addMessage(Notification::ERROR, $e->getMessage());
             }
         }
+
+        // Para uma melhor UX, em caso de erro, redireciona usuário para a mesma foto que ele estava
+        $urlQueryString = isset($this->get['referedId']) ? '?id='.$this->get['referedId'] : '';
+        $this->redirect('view.php'.$urlQueryString);
+    }
+
+    /**
+     * Action delete - Coordena fluxo da ação (action) que 'exclui uma foto' da galeria.
+     */
+    public function delete()
+    {
+        if (isset($this->get['id'])) {
+            // Busca PhotoRecord corrente no banco de dados
+            if ($photo = PhotoRecord::load($this->get['id'])) {
+                // Tenta excluí-lo
+                if ($photo->delete()) {
+                    $this->notifications->addMessage(Notification::SUCCESS, 'Foto excluída com sucesso!');
+                } else {
+                    $this->notifications->addMessage(Notification::ERROR, 'Não foi possível excluir a foto do banco de dados.');
+                }
+            }
+        }
+        // Redireciona usuário para foto inicial da galeria
         $this->redirect('view.php');
     }
 
     /**
      * Action view - Coordena fluxo da ação (action) para 'visualizar uma foto' da galeria.
+     *
+     * @return array Retorna um array com objetos e variáveis que serão consumidos pela view
      */
     public function view()
     {
