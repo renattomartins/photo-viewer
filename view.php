@@ -1,17 +1,7 @@
 <?php
 
-require 'src/Components/Notifications/Notification.php';
-require 'src/Core/FileNotFoundException.php';
-require 'src/Models/Connection.php';
-require 'src/Models/ActiveRecord.php';
-require 'src/Models/Walkable.php';
-require 'src/Models/PhotoRecord.php';
-require 'src/Models/Repository.php';
-require 'src/Models/PhotoRepository.php';
-require 'src/Widgets/Widget.php';
-require 'src/Widgets/PhotoGallery/GalleryButton.php';
-require 'src/Widgets/PhotoGallery/GalleryPhoto.php';
-require 'src/Widgets/Hints/Hints.php';
+// Requer o carregador automático de classes
+require __DIR__.'/vendor/autoload.php';
 
 // Repositório de fotos
 $photoRepository = new Models\PhotoRepository();
