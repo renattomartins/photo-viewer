@@ -35,6 +35,38 @@ class PhotosControl extends Control
     }
 
     /**
+     * Action view - Coordena fluxo da ação (action) para 'visualizar uma foto' da galeria.
+     *
+     * @return array Retorna um array com objetos e variáveis que serão consumidos pela view
+     */
+    public function view()
+    {
+        // Repositório de fotos
+        $photoRepository = new PhotoRepository();
+        $totalPhotos = $photoRepository->count();
+
+        // Referências aos objetos PhotoRecord requisitados
+        $currentPhoto = null;
+        $prevPhoto = null;
+        $nextPhoto = null;
+
+        // Busca PhotoRecord corrente
+        if (isset($this->get['id'])) {
+            $currentPhoto = PhotoRecord::load($this->get['id']);
+        } elseif ($firstPhoto = $photoRepository->load(null, 'id ASC', 1)) {
+            $currentPhoto = PhotoRecord::load($firstPhoto[0]['id']);
+        }
+
+        // Busca foto anterior e posterior
+        if (isset($currentPhoto)) {
+            $prevPhoto = $currentPhoto->previous();
+            $nextPhoto = $currentPhoto->next();
+        }
+
+        return compact(['totalPhotos', 'currentPhoto', 'prevPhoto', 'nextPhoto']);
+    }
+
+    /**
      * Action add - Coordena fluxo da ação (action) que 'cadastra nova foto' na galeria.
      */
     public function add()
@@ -97,37 +129,5 @@ class PhotosControl extends Control
         }
         // Redireciona usuário para foto inicial da galeria
         $this->redirect('index.php?class=PhotosControl&action=view');
-    }
-
-    /**
-     * Action view - Coordena fluxo da ação (action) para 'visualizar uma foto' da galeria.
-     *
-     * @return array Retorna um array com objetos e variáveis que serão consumidos pela view
-     */
-    public function view()
-    {
-        // Repositório de fotos
-        $photoRepository = new PhotoRepository();
-        $totalPhotos = $photoRepository->count();
-
-        // Referências aos objetos PhotoRecord requisitados
-        $currentPhoto = null;
-        $prevPhoto = null;
-        $nextPhoto = null;
-
-        // Busca PhotoRecord corrente
-        if (isset($this->get['id'])) {
-            $currentPhoto = PhotoRecord::load($this->get['id']);
-        } elseif ($firstPhoto = $photoRepository->load(null, 'id ASC', 1)) {
-            $currentPhoto = PhotoRecord::load($firstPhoto[0]['id']);
-        }
-
-        // Busca foto anterior e posterior
-        if (isset($currentPhoto)) {
-            $prevPhoto = $currentPhoto->previous();
-            $nextPhoto = $currentPhoto->next();
-        }
-
-        return compact(['photoRepository', 'totalPhotos', 'currentPhoto', 'prevPhoto', 'nextPhoto']);
     }
 }
