@@ -32,6 +32,9 @@ class PhotosControl extends Control
 
         // Usa componente Notification
         $this->notifications = new Notification();
+
+        // Seta template
+        $this->setTemplate('gallery');
     }
 
     /**

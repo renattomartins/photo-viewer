@@ -15,6 +15,7 @@ abstract class Control
     protected $get;
     protected $post;
     protected $files;
+    protected $template;
 
     /**
      * Método construtor.
@@ -37,11 +38,40 @@ abstract class Control
     /**
      * Seta cabeçalho HTTP para redirecionar fluxo para uma requisição.
      *
-     * @param string $url URL relativa ou absoluta.
+     * @param string $url URL relativa ou absoluta
      */
     protected function redirect($url)
     {
         header('Location: '.$url, true, 302);
         exit();
+    }
+
+    /**
+     * Escolhe template a ser usado.
+     *
+     * @param $name Nome do arquivo de template, sem extensão. Sempre será adicionado
+     *              a extensão ".php" ao final do nome
+     *
+     * @return bool True se template foi escolhido
+     */
+    protected function setTemplate($name)
+    {
+        if (file_exists('src/Templates/'.$name.'.php')) {
+            $this->template = $name;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Retorna nome do template.
+     *
+     * @return string True se template foi escolhido
+     */
+    public function getTemplate()
+    {
+        return $this->template;
     }
 }

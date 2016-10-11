@@ -44,7 +44,7 @@ if ($_GET) {
             extract($viewVars);
 
             // Requer template
-            require __DIR__.'/src/Templates/gallery.php';
+            require __DIR__.'/src/Templates/'.$controller->getTemplate().'.php';
             exit();
         }
     }
