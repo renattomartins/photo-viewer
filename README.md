@@ -1,12 +1,12 @@
 # Photo Viewer
 
-O [Photo Viewer](rd2m.com/maxmilhas-test/) é uma aplicação web desenvolvida como parte do Teste de Codificação Back-end para a vaga de desenvolvedor na **MaxMilhas**.
+O [Photo Viewer](http://rd2m.com/maxmilhas-test/) é uma aplicação web desenvolvida como parte do Teste de Codificação Back-end para a vaga de desenvolvedor na **MaxMilhas**.
 
 Ele é uma aplicação web onde é possível cadastrar fotos, ver a lista de fotos cadastradas e também excluir fotos. As fotos cadastradas são exibidas como uma galeria onde o usuário navega e visualiza uma foto por vez.
 
 A aplicação foi desenvolvida utilizando PHP 5.6.
 
-Você pode ver uma [demonstração](rd2m.com/maxmilhas-test/) antes de instalar na sua máquina.
+Você pode ver uma [demonstração](http://rd2m.com/maxmilhas-test/) antes de instalar na sua máquina.
 
 ## Instalação
 
@@ -22,13 +22,13 @@ Você pode ver uma [demonstração](rd2m.com/maxmilhas-test/) antes de instalar 
 
 ## Documentação
 
-A [documentação da API do projeto](rd2m.com/maxmilhas-test/docs/api/index.html) foi gerada através do phpDocumentor 2.8\. Para ter uma visão geral das classes da aplicação, além da própria [documentação](rd2m.com/maxmilhas-test/docs/api/index.html), não deixe de ver o [diagrama de hierarquia de classes](rd2m.com/maxmilhas-test/docs/api/graphs/class.html).
+A [documentação da API do projeto](http://rd2m.com/maxmilhas-test/docs/api/index.html) foi gerada através do phpDocumentor 2.8\. Para ter uma visão geral das classes da aplicação, além da própria [documentação](http://rd2m.com/maxmilhas-test/docs/api/index.html), não deixe de ver o [diagrama de hierarquia de classes](http://rd2m.com/maxmilhas-test/docs/api/graphs/class.html).
 
 ## Testes unitários
 
 A aplicação tem como dependência de desenvolvimento o PHPUnit 5.6, mas infelizmente NÃO foram feitos muitos testes unitários. Foram feitos apenas alguns para evidenciar que **sei configurar** o ambiente para testes (PHPUnit, phpunit.xml, xDebug, code coverage report, etc) e que sei o que é um teste unitário.
 
-Só para constar, o [code coverage report do projeto](rd2m.com/maxmilhas-test/tests/data/coverage/index.html) mostra que foi coberto **apenas 6,4%** do código :( mas não se preocupe. Posso fazer bem melhor do que isso _com mais tempo_ na próxima release do "projeto".
+Só para constar, o [code coverage report do projeto](http://rd2m.com/maxmilhas-test/tests/data/coverage/index.html) mostra que foi coberto **apenas 6,4%** do código :( mas não se preocupe. Posso fazer bem melhor do que isso _com mais tempo_ na próxima release do "projeto".
 
 Ah! O intuito inicial era não apenas fazer testes unitários, mas também usar **TDD** ([clique aqui](https://github.com/renattomartins/photo-viewer/blob/develop/tests/uploads/photos/tdd.jpg)) com _Red-Green-Refactor_ e tudo mais, mas não foi possível - sendo bem franco - devido a minha não muito grande experiência em testes unitários, e principalmente, devido ao tempo reduzido.
 
