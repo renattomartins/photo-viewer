@@ -1,0 +1,78 @@
+<?php
+
+namespace Controllers;
+
+/**
+ * Classe Control.
+ *
+ * As classes do tipo Control são responsáveis por coordenar o fluxo
+ * de execução das requisições recebidas pela aplicação.
+ *
+ * @author Renato Martins <renatto.martins@gmail.com>
+ */
+abstract class Control
+{
+    protected $get;
+    protected $post;
+    protected $files;
+    protected $template;
+
+    /**
+     * Método construtor.
+     */
+    public function __construct($globals)
+    {
+        $this->get = $globals['get'];
+        $this->post = $globals['post'];
+        $this->files = $globals['files'];
+
+        // Retira parâmetros de controle de fluxo dos dados vindo na query string
+        if (isset($this->get['class'])) {
+            unset($this->get['class']);
+        }
+        if (isset($this->get['action'])) {
+            unset($this->get['action']);
+        }
+    }
+
+    /**
+     * Seta cabeçalho HTTP para redirecionar fluxo para uma requisição.
+     *
+     * @param string $url URL relativa ou absoluta
+     */
+    protected function redirect($url)
+    {
+        header('Location: '.$url, true, 302);
+        exit();
+    }
+
+    /**
+     * Escolhe template a ser usado.
+     *
+     * @param $name Nome do arquivo de template, sem extensão. Sempre será adicionado
+     *              a extensão ".php" ao final do nome
+     *
+     * @return bool True se template foi escolhido
+     */
+    protected function setTemplate($name)
+    {
+        if (file_exists('src/Templates/'.$name.'.php')) {
+            $this->template = $name;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Retorna nome do template.
+     *
+     * @return string True se template foi escolhido
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+}
+
