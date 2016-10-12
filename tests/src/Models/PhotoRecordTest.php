@@ -3,35 +3,64 @@
 namespace Models;
 
 use Tests\TestCase;
+use Core\FileNotFoundException;
 
-class UserTest extends TestCase
+/**
+ * Classe PhotoRecordTest.
+ *
+ * @author Renato Martins <renatto.martins@gmail.com>
+ */
+class PhotoRecordTest extends TestCase
 {
-    protected $entity;
+    private $fileName;
 
+    /**
+     * Executado antes de cada teste unitário.
+     */
     public function setUp()
     {
-        $this->entity = 'Appliction\Model\Photo';
+        parent::setUp();
+
+        // Simula arquivo base para ser usado no construtor do PhotoRecord
+        $this->fileName = 'tdd'.rand().'jpg';
+        copy('tests/uploads/photos/tdd.jpg', PhotoRecord::PHOTOS_DIRECTORY.$this->fileName);
     }
 
-    public function testIfIsSavingAsExpected()
+    /**
+     * Executado após a execução de cada um dos testes unitários.
+     */
+    public function tearDown()
     {
-        // Criando os dados necessários para salvar o usuário
-        // $photoData = ['id' => null, 'name' => 'foto1.jpg'];
+        parent::tearDown();
 
-        // Instanciando a entidade Photo definindo todos os atributos à ela
-        // $photo = new Photo($photoData);
+        // Remove arquivo
+        unlink(PhotoRecord::PHOTOS_DIRECTORY.$this->fileName);
+    }
 
-        // salvando o usuário no banco de dados
-        // $this->getEntityManager()->persist($photo);
-        // $this->getEntityManager()->flush();
+    /**
+     * Testa se o construtor está funcionando corretamente.
+     */
+    public function testIfConstructIsWorking()
+    {
+        // Instanciando um PhotoRecord
+        $photoRecord = new PhotoRecord($this->fileName);
+        $this->assertInstanceOf('Models\PhotoRecord', $photoRecord);
 
-        // Obtendo o usuário salvo
-        // $registeredPhoto = $this->getEntityManager()
-        //     ->getRepository($this->entity)
-        //     ->findOneBy(array('id' => 2));
+        // Instanciando um PhotoRecord com arquivo não existente
+        $this->expectException(FileNotFoundException::class);
+        new PhotoRecord('arquivo_nao_existente.jpg');
+    }
 
-        // Garantindo que tudo funcionou conforme o esperado
-        // $this->assertInstanceOf($this->entity, $registeredPhoto);
-        // $this->assertEquals($photoData['name'], $registeredPhoto->getName());
+    /**
+     * Testa os métodos 'get__'.
+     */
+    public function testGetters()
+    {
+        // Instanciando um PhotoRecord
+        $photoRecord = new PhotoRecord($this->fileName);
+
+        $this->assertEquals(0, $photoRecord->getId());
+        $this->assertEquals($this->fileName, $photoRecord->getName());
+        $this->assertEquals("Id: 0, Name: {$this->fileName}", $photoRecord->toString());
     }
 }
