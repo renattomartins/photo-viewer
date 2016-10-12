@@ -1,6 +1,10 @@
-Controller\Controller
+Components\FileUploader\UploadedPhoto
+ [x] If construct is working
+
+Controllers\Control
  [x] If is showing correct controller
 
-Model\User
- [x] If is saving as expected
+Models\PhotoRecord
+ [x] If construct is working
+ [x] Getters
 

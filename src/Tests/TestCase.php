@@ -1,20 +1,22 @@
 <?php
 
-namespace Test;
+namespace Tests;
 
 use PHPUnit_Framework_TestCase as PHPUnit;
 
 /**
  * Classe abstrata TestCase
+ *
+ * @author Renato Martins <renatto.martins@gmail.com>
  */
 abstract class TestCase extends PHPUnit
 {
     /**
      * Executado antes de cada teste unitário.
      */
-    public function setup()
+    public function setUp()
     {
-        parent::setup();
+        parent::setUp();
     }
 
     /**
