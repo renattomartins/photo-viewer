@@ -1,0 +1,62 @@
+<?php
+
+namespace Widgets\Hints;
+
+use Widgets\Widget;
+use Components\Notifications\Notification;
+
+/**
+ * Classe Hints.
+ *
+ * Essa classe é um representação visual de notificações e mensagens ao
+ * usuário final. Através dela são renderizadas tags e estrutura HTML que
+ * interagem com JavaScript e CSS da página.
+ *
+ * @author Renato Martins <renatto.martins@gmail.com>
+ */
+class Hints extends Widget
+{
+    /**
+     * Método construtor.
+     */
+    public function __construct()
+    {
+        $this->output = '';
+
+        // Verifica existência do arquivo de notificações
+        if (file_exists(Notification::PATH)) {
+            // Tenta abri-lo para leitura
+            $handle = fopen(Notification::PATH, 'r');
+            while (($line = fgets($handle)) !== false) {
+                $columns = explode("\t", $line);
+                $this->buildBlock($columns[0], $columns[1]);
+            }
+            fclose($handle);
+
+            // Apaga arquivo, pois as mensagens são exibidas apenas umas vez
+            unlink(Notification::PATH);
+        }
+    }
+
+    /**
+     * Constrói bloco HTML que representa uma notificação.
+     *
+     * @param int    $type    Constantes pré-definidas (Notification::SUCCESS=1) e (Notification::ERROR=2)
+     * @param string $message Messagem a ser exibida ao usuário final
+     */
+    private function buildBlock($type, $message)
+    {
+        if ($type == Notification::SUCCESS) {
+            $this->output .= '<div class="hint-box hint-box-success js-hint-box">';
+            $this->output .= '<h5 class="hint-box-title">Tudo certo! :)</h5>';
+            $this->output .= '<span class="hint-box-msg">'.$message.'</span>';
+            $this->output .= '</div>';
+        } elseif ($type == Notification::ERROR) {
+            $this->output .= '<div class="hint-box hint-box-error js-hint-box">';
+            $this->output .= '<h5 class="hint-box-title">Vixe... deu erro :(</h5>';
+            $this->output .= '<span class="hint-box-msg">'.$message.'</span>';
+            $this->output .= '</div>';
+        }
+    }
+}
+
